@@ -1,6 +1,6 @@
 # nimkernel
 
-This is a small 32bit (i586) kernel written using the Nim programming language.
+This is a small 32bit (i686) kernel written using the Nim programming language.
 
 I have been wanting to do this for a while but it wasn't until people in the #nim IRC
 channel inquired about Nim OS dev and the
@@ -30,54 +30,19 @@ the error handling works properly.
 You are required to have:
 
 * QEMU
-* a C and asm cross-compiler for i586
-* Nim from git HEAD
-* nimble (*)
-
-\* You can always grab the nake library manually from [here](https://github.com/fowlmouth/nake).
+* a C and AS cross-compiler for i686
+* Nim
+* nimble
 
 ### Linux
 
-I have performed this setup on a Arch Linux machine, but all other distros
-should work too.
+I have performed this setup on a Arch Linux machine, but it should work on other distributions as well.
 
 #### Building a cross compiler
 
+A prewritten script with instructions for building a cross compiler can be found at [edge/cross](https://github.com/edge/cross).
+
 For more information take a look at the [OSDev article](http://wiki.osdev.org/GCC_Cross-Compiler).
-
-You will need to download the source of binutils and gcc.
-
-First ``cd`` into a suitable directory in which you would like to download, unzip
-and build the cross compiler. Then perform the following actions:
-
-```bash
-$ wget ftp://sourceware.org/pub/binutils/snapshots/binutils-2.24.51.tar.bz2
-$ tar -xf binutils-2.24.51.tar.bz2
-$ mkdir build 
-$ ./binutils-2.24.51/configure --target=i586-elf --prefix=$PWD/build/ --disable-nls
-$ make
-$ make install
-```
-
-Note: I did not use the binutils suggested by the osdev article as they did
-not build for me, YMMV.
-
-You may then grab the GCC source and build it:
-
-```bash
-$ wget ftp://ftp.gnu.org/gnu/gcc/gcc-4.9.2/gcc-4.9.2.tar.bz2
-$ tar -xf gcc-4.9.2.tar.bz2
-$ ./gcc-4.9.2/configure --target=i586-elf --prefix=$PWD/build/ --disable-nls --enable-languages=c --without-headers
-$ make all-gcc
-$ make install-gcc
-```
-
-You should then have a i586-elf-gcc and i586-elf-as executable in $PWD/build/bin/ or somewhere thereabouts.
-You should then add it to your PATH permanently or temporarily by doing:
-
-```bash
-export PATH=$PATH:$PWD/build/bin
-```
 
 #### Nim setup
 
@@ -100,6 +65,3 @@ This will automatically build and run the kernel using QEMU.
 ## License
 
 Nimkernel is licensed under the MIT license.
-
- 
-

@@ -3,8 +3,8 @@ import memio
 
 proc rawoutput(s: string) =
     var vram = cast[PVIDMem](VRAMOffset)
-    writeString(vram, "Error: ", makeColor(White, Red), (0, 24))
-    writeString(vram, s, makeColor(White, Red), (7, 24))
+    writeString(vram, "Error: ", packColor(White, Red), (0, 24))
+    writeString(vram, s, packColor(White, Red), (7, 24))
 
 proc panic(s: string) =
     rawoutput(s)

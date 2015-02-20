@@ -14,7 +14,7 @@ proc kmain(mb_header: PMultiboot_header, magic: int) {.exportc.} =
     # var x = len(vram[])
     # var outOfBounds = vram[x]
 
-    let attr = makeColor(DarkGray, LightGreen)
-    writeString(vram, "Nim", attr, (25, 9))
-    writeString(vram, "Expressive. Efficient. Elegant.", attr, (25, 10))
-    rainbow(vram, "It's pure pleasure.", (x: 25, y: 11))
+    let attr = packColor(DarkGray, LightGreen)
+    vram.writeString("Nim", attr, (25, 9))
+    vram.writeString("Expressive. Efficient. Elegant.", attr, (25, 10))
+    vram.writeString("It's pure pleasure.", attr, (5, 11))

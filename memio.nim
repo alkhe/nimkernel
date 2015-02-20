@@ -3,22 +3,22 @@ type
     PVIDMem* = ptr array[0..65_535, TEntry]
 
     TVGAColor* = enum
-        Black = 0,
-        Blue = 1,
-        Green = 2,
-        Cyan = 3,
-        Red = 4,
-        Magenta = 5,
-        Brown = 6,
-        LightGrey = 7,
-        DarkGrey = 8,
-        LightBlue = 9,
-        LightGreen = 10,
-        LightCyan = 11,
-        LightRed = 12,
-        LightMagenta = 13,
-        Yellow = 14,
-        White = 15
+        Black = 0x0,
+        Blue = 0x1,
+        Green = 0x2,
+        Cyan = 0x3,
+        Red = 0x4,
+        Magenta = 0x5,
+        Brown = 0x6,
+        LightGray = 0x7,
+        DarkGray = 0x8,
+        LightBlue = 0x9,
+        LightGreen = 0xa,
+        LightCyan = 0xb,
+        LightRed = 0xc,
+        LightMagenta = 0xd,
+        Yellow = 0xe,
+        White = 0xf
 
     TPos* = tuple[x: int, y: int]
 
@@ -26,6 +26,7 @@ type
     TEntry* = distinct uint16
 
 const
+    VRAMOffset* = 0xb8000
     VGAWidth* = 80
     VGAHeight* = 25
 
@@ -48,7 +49,7 @@ proc writeChar*(vram: PVidMem, entry: TEntry, pos: TPos) =
 proc rainbow*(vram: PVidMem, text: string, pos: TPos) =
     ## Writes a string at the specified ``pos`` with varying colors which, despite
     ## the name of this function, do not resemble a rainbow.
-    var colorBG = DarkGrey
+    var colorBG = DarkGray
     var colorFG = Blue
     proc nextColor(color: TVGAColor, skip: set[TVGAColor]): TVGAColor =
         if color == White:
@@ -58,7 +59,7 @@ proc rainbow*(vram: PVidMem, text: string, pos: TPos) =
         if result in skip: result = nextColor(result, skip)
 
     for i in 0 .. text.len-1:
-        colorFG = nextColor(colorFG, {Black, Cyan, DarkGrey, Magenta, Red, Blue, LightBlue, LightMagenta})
+        colorFG = nextColor(colorFG, {Black, Cyan, DarkGray, Magenta, Red, Blue, LightBlue, LightMagenta})
         let attr = makeColor(colorBG, colorFG)
 
         vram.writeChar(makeEntry(text[i], attr), (pos.x+i, pos.y))

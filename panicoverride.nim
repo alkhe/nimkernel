@@ -1,8 +1,8 @@
-import ioutils
+import memio
 {.push stack_trace: off, profiler:off.}
 
 proc rawoutput(s: string) =
-    var vram = cast[PVIDMem](0xB8000)
+    var vram = cast[PVIDMem](VRAMOffset)
     writeString(vram, "Error: ", makeColor(White, Red), (0, 24))
     writeString(vram, s, makeColor(White, Red), (7, 24))
 

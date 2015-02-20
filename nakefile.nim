@@ -18,7 +18,7 @@ task "build", "build the operating system":
     echo "Assembling..."
     direShell AS, "boot.s -o boot.o"
     echo "Linking..."
-    direShell CC, "-T linker.ld -o main.bin -ffreestanding -O2 -nostdlib boot.o nimcache/main.o nimcache/system.o nimcache/unsigned.o nimcache/ioutils.o"
+    direShell CC, "-T linker.ld -o main.bin -ffreestanding -O2 -nostdlib boot.o nimcache/main.o nimcache/system.o nimcache/unsigned.o nimcache/memio.o"
 
 task "run", "run the operating system using QEMU":
     if not existsFile("main.bin"): runTask("build")

@@ -1,5 +1,6 @@
 import nake
 import os
+import strutils
 
 const arch = "i686-elf"
 
@@ -8,9 +9,12 @@ const
     AS = arch & "-as"
 
 task "clean", "remove build files":
-    removeFile("boot.o")
-    removeFile("kmain.bin")
-    removeDir("nimcache")
+    var ignores = readFile(".gitignore")
+    for filename in splitLines(ignores):
+        if existsDir(filename):
+            removeDir filename
+        else:
+            removeFile filename
 
 task "build", "build the operating system":
     echo "Compiling..."
@@ -18,7 +22,7 @@ task "build", "build the operating system":
     echo "Assembling..."
     direShell AS, "boot.s -o boot.o"
     echo "Linking..."
-    direShell CC, "-T linker.ld -o main.bin -ffreestanding -O2 -nostdlib boot.o nimcache/kmain.o nimcache/system.o nimcache/unsigned.o nimcache/memio.o"
+    direShell CC, "-T linker.ld -o kernel.bin -ffreestanding -O2 -nostdlib boot.o nimcache/kmain.o nimcache/main.o nimcache/system.o nimcache/unsigned.o nimcache/memio.o"
 
 task "run", "run the operating system using QEMU":
     if not existsFile("main.bin"): runTask("build")
